@@ -12,5 +12,6 @@ namespace FinalYearProject.Models
         public string Category { get; set; }
         public bool isResolved { get; set; }
         public virtual ApplicationUser User { get; set; }
+        public DateTime DateAdded { get; set; }
     }
 }

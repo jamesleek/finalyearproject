@@ -11,6 +11,9 @@
         <th>
             @Html.DisplayNameFor(model => model.isResolved)
         </th>
+        <th>
+            Date & Time Added
+        </th>
         <th></th>
     </tr>
 
@@ -25,6 +28,9 @@
             </td>
             <td>
                 @Html.CheckBoxFor(modelItem => item.isResolved, new { id = item.Id, @class = "ActiveCheck" })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateAdded)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |

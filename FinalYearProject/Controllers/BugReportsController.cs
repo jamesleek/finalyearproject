@@ -29,6 +29,11 @@ namespace FinalYearProject.Controllers
 
         }
 
+        private String getACategory()
+        {
+            return "Default";
+        }
+
         public ActionResult BuildBugReportTable()
         {
             return PartialView("_BugReportTable",GetMyBugReports());
@@ -84,7 +89,8 @@ namespace FinalYearProject.Controllers
                 string currentUserId = User.Identity.GetUserId();
                 ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
                 bugReport.User = currentUser;
-                bugReport.isResolved = false;   
+                bugReport.isResolved = false;
+                bugReport.DateAdded = DateTime.Now;
                 db.BugReports.Add(bugReport);
                 db.SaveChanges();
                 
