@@ -29,8 +29,25 @@ namespace FinalYearProject.Controllers
 
         }
 
-        private String getACategory()
+
+        /*
+         * For every category get each keyword
+         * turn these keywords into a hash
+         * Use this had to search through bug description
+         * if a match set catgeory as one where the keyword is
+         * return this category
+         */
+        private string GetACategory(string bugDescription)
         {
+
+            string keywords;
+
+            foreach (var item in db.Categories)
+            {
+                keywords = item.Keywords;
+                List<string> listKeywords = keywords.Split(',').ToList<string>();
+            }
+
             return "Default";
         }
 
