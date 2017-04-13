@@ -46,6 +46,10 @@ namespace FinalYearProject.Controllers
             {
                 keywords = item.Keywords;
                 List<string> listKeywords = keywords.Split(',').ToList<string>();
+                foreach (var item2 in listKeywords)
+                {
+                   
+                }
             }
 
             return "Default";
