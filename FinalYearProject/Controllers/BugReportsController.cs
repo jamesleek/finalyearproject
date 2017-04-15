@@ -41,17 +41,70 @@ namespace FinalYearProject.Controllers
         {
 
             string keywords;
+            ulong siga = 0;
+            ulong sigb = 0;
+            ulong Q = 100007;
+            ulong D = 256;
+            string A = bugDescription.ToLower();
+            string B;
 
-            foreach (var item in db.Categories)
+            try
             {
-                keywords = item.Keywords;
-                List<string> listKeywords = keywords.Split(',').ToList<string>();
-                foreach (var item2 in listKeywords)
-                {
-                   
-                }
-            }
+                    foreach (var item in db.Categories)
+                    {
+                    System.Diagnostics.Debug.WriteLine(item.CategoryName);
 
+                        keywords = item.Keywords;
+                        List<string> listKeywords = keywords.Split(',').ToList<string>();
+                    
+                    foreach (var item2 in listKeywords)
+                        {
+                            B = item2.ToLower();
+                            System.Diagnostics.Debug.WriteLine(B);
+                            siga = 0;
+                            sigb = 0;
+                            Q = 100007;
+                            D = 256;
+                        for (int i = 0; i < B.Length; i++)
+                            {
+                                siga = (siga * D + (ulong)A[i]) % Q;
+                                sigb = (sigb * D + (ulong)B[i]) % Q;
+                            }
+                            if (siga == sigb)
+                            {
+                                Console.WriteLine(string.Format(">>{0}<<{1}", A.Substring(0, B.Length), A.Substring(B.Length)));
+                            return item.CategoryName;
+                            }
+
+                            ulong pow = 1;
+                            for (int k = 1; k <= B.Length - 1; k++)
+                                pow = (pow * D) % Q;
+
+                            for (int j = 1; j <= A.Length - B.Length; j++)
+                            {
+                                siga = (siga + Q - pow * (ulong)A[j - 1] % Q) % Q;
+                                siga = (siga * D + (ulong)A[j + B.Length - 1]) % Q;
+                                if (siga == sigb)
+                                {
+                                    if (A.Substring(j, B.Length) == B)
+                                    {
+                                        Console.WriteLine(string.Format("{0}>>{1}<<{2}", A.Substring(0, j),
+                                                                                            A.Substring(j, B.Length),
+                                                                                            A.Substring(j + B.Length)));
+                                        return item.CategoryName;
+                                        
+                                    }
+                                }
+                            }
+                        }
+                    }
+                
+            }
+            catch(Exception e)
+            {
+                
+            }
+            
             return "Default";
         }
 
@@ -112,6 +165,7 @@ namespace FinalYearProject.Controllers
                 bugReport.User = currentUser;
                 bugReport.isResolved = false;
                 bugReport.DateAdded = DateTime.Now;
+                bugReport.Category = GetACategory(bugReport.BugDescription);
                 db.BugReports.Add(bugReport);
                 db.SaveChanges();
                 
