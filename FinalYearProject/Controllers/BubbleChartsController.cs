@@ -28,14 +28,14 @@ namespace FinalYearProject.Controllers
         public void CreateCSVFiles()
         {
 
-            string directory = Server.MapPath("~/App_Data/");
+            string directory = Server.MapPath("~/");
             string filename = "categories.csv";
             string path = Path.Combine(directory, filename);
 
 
             using (var sw = new StreamWriter(path))
             {
-                sw.WriteLine("\"Category Name\",\"Number Of Bugs\"");
+                sw.WriteLine("\"id\",\"value\"");
 
                 foreach (var item in db.Categories)
                 {

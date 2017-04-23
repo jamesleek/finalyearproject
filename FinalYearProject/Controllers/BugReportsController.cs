@@ -73,6 +73,7 @@ namespace FinalYearProject.Controllers
                             if (siga == sigb)
                             {
                                 Console.WriteLine(string.Format(">>{0}<<{1}", A.Substring(0, B.Length), A.Substring(B.Length)));
+                            db.Categories.Find(item.Id).NumberOfBugs += 1;
                             return item.CategoryName;
                             }
 
@@ -91,7 +92,8 @@ namespace FinalYearProject.Controllers
                                         Console.WriteLine(string.Format("{0}>>{1}<<{2}", A.Substring(0, j),
                                                                                             A.Substring(j, B.Length),
                                                                                             A.Substring(j + B.Length)));
-                                        return item.CategoryName;
+                                    db.Categories.Find(item.Id).NumberOfBugs += 1;
+                                    return item.CategoryName;
                                         
                                     }
                                 }
