@@ -254,6 +254,15 @@ namespace FinalYearProject.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost, ActionName("Delete")]
+        public ActionResult AjaxDeleteConfirmed(int id)
+        {
+            BugReport bugReport = db.BugReports.Find(id);
+            db.BugReports.Remove(bugReport);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

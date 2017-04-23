@@ -35,11 +35,38 @@
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                <a onclick="validateDelete();">Delete</a>
             </td>
         </tr>
     }
 
 </table>
+<script>
+    function validateDelete() {
+        swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover this imaginary file!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false
+        },
+            function () {
+                swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                var self = $(this);
+                var id = self.attr('id');
+                $.ajax({
+                    url: '/BugReports/AjaxDeleteConfirmed',
+                    data: {
+                        id: id,
+                    },
+                    type: 'POST',
+                    success: function (result) {
+                        $('#tableDiv').html(result);
+                    }
+                });
 
-<script src="~/Custom Scripts/AddCheckBoxListener.js"></script>
+            });
+    }
+</script>
