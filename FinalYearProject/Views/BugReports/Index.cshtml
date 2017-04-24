@@ -5,7 +5,6 @@
 }
 
 <h2>Your Bugs</h2>
-
 <div id="tableDiv"></div>
 <div id="bugReportCreateForm">
     @using (Ajax.BeginForm("AJAXCreate", "BugReports",
@@ -14,7 +13,6 @@
                     InsertionMode = InsertionMode.Replace,
                     HttpMethod = "POST",
                     UpdateTargetId = "tableDiv"
-
                 }))
     {
         <div class="form-group">
@@ -28,6 +26,7 @@
     }
 </div>
 @section Scripts{
+
     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
     <script src="~/Custom Scripts/BuildTable.js"></script>
     <script src="~/Custom Scripts/DeleteDialog.js"></script>

@@ -168,6 +168,7 @@ namespace FinalYearProject.Controllers
                 bugReport.isResolved = false;
                 bugReport.DateAdded = DateTime.Now;
                 bugReport.Category = GetACategory(bugReport.BugDescription);
+                bugReport.UserName = currentUser.UserName.ToString();
                 db.BugReports.Add(bugReport);
                 db.SaveChanges();
                 

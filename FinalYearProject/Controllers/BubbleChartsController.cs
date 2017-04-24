@@ -20,6 +20,8 @@ namespace FinalYearProject.Controllers
         public ActionResult Index()
         {
             CreateCSVFiles();
+            CreateCSVFiles2();
+            CreateCSVFiles3();
             return View(db.Categories.ToList());
         }
 
@@ -27,11 +29,9 @@ namespace FinalYearProject.Controllers
         //Create .CSV files for each charrt
         public void CreateCSVFiles()
         {
-
             string directory = Server.MapPath("~/");
             string filename = "categories.csv";
             string path = Path.Combine(directory, filename);
-
 
             using (var sw = new StreamWriter(path))
             {
@@ -44,9 +44,12 @@ namespace FinalYearProject.Controllers
                 }
 
             }
+        }
 
+        public void CreateCSVFiles2()
+        {
             string directory2 = Server.MapPath("~/");
-            string filename2= "months.csv";
+            string filename2 = "months.csv";
             string path2 = Path.Combine(directory2, filename2);
             int jan = 0;
             int feb = 0;
@@ -73,13 +76,13 @@ namespace FinalYearProject.Controllers
                         case (1):
                             jan += 1;
                             break;
-                        case (2):                            
+                        case (2):
                             feb += 1;
                             break;
-                        case (3):                           
+                        case (3):
                             mar += 1;
                             break;
-                        case (4):                            
+                        case (4):
                             apr += 1;
                             break;
                         case (5):
@@ -137,26 +140,35 @@ namespace FinalYearProject.Controllers
                         "December", dec));
 
             }
+        }
 
+        public void CreateCSVFiles3()
+        {
             string directory3 = Server.MapPath("~/");
             string filename3 = "BugsByUser.csv";
             string path3 = Path.Combine(directory3, filename3);
-            
 
-            using(var sw3 = new StreamWriter(path3))
+            var testest = db.BugReports.ToList();
+
+            using (var sw3 = new StreamWriter(path3))
             {
                 sw3.WriteLine("\"id\",\"value\"");
-
-                foreach(var item3 in db.BugReports)
+                foreach (var item4 in db.Users)
                 {
-                    
+                    int bugCount = 0;
+                    foreach (var item3 in testest)
+                    {
+                        if (item4.UserName.ToString() == item3.UserName)
+                        {
+                            bugCount += 1;
+                        }
+                    }
                     sw3.WriteLine(string.Format("\"{0}\",\"{1}\"",
-                         item3.User.Email.ToString(), 1));
+                        item4.UserName.ToString(), bugCount));
                 }
             }
-
-
         }
+
 
         // GET: BubbleCharts/Details/5
         public ActionResult Details(int? id)
