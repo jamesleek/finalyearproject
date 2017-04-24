@@ -22,7 +22,7 @@
         .size([width, height])
         .padding(1.5);
 
-    d3.csv("categories.csv", function (d) {
+    d3.csv("BugsByUser.csv", function (d) {
         d.value = +d.value;
         if (d.value) return d;
     }, function (error, classes) {
