@@ -25,6 +25,9 @@ namespace FinalYearProject.Controllers
         {
             string currentUserId = User.Identity.GetUserId();
             ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
+
+
+
             return db.BugReports.ToList().Where(x => x.User == currentUser);
 
         }
@@ -255,14 +258,7 @@ namespace FinalYearProject.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost, ActionName("Delete")]
-        public ActionResult AjaxDeleteConfirmed(int id)
-        {
-            BugReport bugReport = db.BugReports.Find(id);
-            db.BugReports.Remove(bugReport);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+
 
         protected override void Dispose(bool disposing)
         {
