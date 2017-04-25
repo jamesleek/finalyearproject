@@ -165,16 +165,18 @@ namespace FinalYearProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                string currentUserId = User.Identity.GetUserId();
-                ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
-                bugReport.User = currentUser;
-                bugReport.isResolved = false;
-                bugReport.DateAdded = DateTime.Now;
-                bugReport.Category = GetACategory(bugReport.BugDescription);
-                bugReport.UserName = currentUser.UserName.ToString();
-                db.BugReports.Add(bugReport);
-                db.SaveChanges();
-                
+                if (bugReport.BugDescription != null)
+                {
+                    string currentUserId = User.Identity.GetUserId();
+                    ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
+                    bugReport.User = currentUser;
+                    bugReport.isResolved = false;
+                    bugReport.DateAdded = DateTime.Now;
+                    bugReport.Category = GetACategory(bugReport.BugDescription);
+                    bugReport.UserName = currentUser.UserName.ToString();
+                    db.BugReports.Add(bugReport);
+                    db.SaveChanges();
+                }
             }
 
             return PartialView("_BugReportTable",GetMyBugReports());

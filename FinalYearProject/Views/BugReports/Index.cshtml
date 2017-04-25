@@ -8,12 +8,14 @@
 <div id="tableDiv"></div>
 <div id="bugReportCreateForm">
     @using (Ajax.BeginForm("AJAXCreate", "BugReports",
-                new AjaxOptions
-                {
-                    InsertionMode = InsertionMode.Replace,
-                    HttpMethod = "POST",
-                    UpdateTargetId = "tableDiv"
-                }))
+                        new AjaxOptions
+                        {
+                            InsertionMode = InsertionMode.Replace,
+                            HttpMethod = "POST",
+                            UpdateTargetId = "tableDiv",
+                            OnSuccess = "message"
+                        }))
+
     {
         <div class="form-group">
             @Html.AntiForgeryToken()
@@ -26,10 +28,13 @@
     }
 </div>
 @section Scripts{
-
+    <script>
+        function message() {
+            swal("Bug Submitted!", "Your bug report has been submitted!", "success");
+        }
+    </script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
     <script src="~/Custom Scripts/BuildTable.js"></script>
-    <script src="~/Custom Scripts/DeleteDialog.js"></script>
     <script src="~/Scripts/sweetalert.min.js"></script>
     <link rel="stylesheet" type="text/css" href="~/Content/sweetalert.css">
     @Scripts.Render("~/bundles/jqueryval")

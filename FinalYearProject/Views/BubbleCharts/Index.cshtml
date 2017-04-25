@@ -73,9 +73,12 @@
 
             node.on("click", click)
             function click(d) {
-                $(location).attr('href', 'https://www.google.co.uk/#safe=off&q=' + d.id);
+                $(location).attr('href', '/BugReports');
+                sessionStorage.setItem("categoryClicked", d.id);
             }
             });
+
+
     }
 </script>
 <script>

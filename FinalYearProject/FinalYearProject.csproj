@@ -246,7 +246,6 @@
     <Content Include="Custom Scripts\AddCheckBoxListener.js" />
     <Content Include="Custom Scripts\BugsByCategory.js" />
     <Content Include="Custom Scripts\BuildTable.js" />
-    <Content Include="Custom Scripts\DeleteDialog.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
