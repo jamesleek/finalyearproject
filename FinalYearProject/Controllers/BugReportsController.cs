@@ -118,20 +118,6 @@ namespace FinalYearProject.Controllers
             return PartialView("_BugReportTable",GetMyBugReports());
         }
 
-        // GET: BugReports/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            BugReport bugReport = db.BugReports.Find(id);
-            if (bugReport == null)
-            {
-                return HttpNotFound();
-            }
-            return View(bugReport);
-        }
 
         // GET: BugReports/Create
         public ActionResult Create()
@@ -182,37 +168,35 @@ namespace FinalYearProject.Controllers
             return PartialView("_BugReportTable",GetMyBugReports());
         }   
 
-
-        // GET: BugReports/Edit/5
-        public ActionResult Edit(int? id)
+        
+       public void DecrementBugs(int bugId)
         {
-            if (id == null)
+            BugReport bugreport = db.BugReports.Find(bugId);
+            string category = bugreport.Category;
+
+            foreach(var categorySearch in db.Categories)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (categorySearch.CategoryName == category)
+                {
+                    categorySearch.NumberOfBugs -= 1;
+                }
             }
-            BugReport bugReport = db.BugReports.Find(id);
-            if (bugReport == null)
-            {
-                return HttpNotFound();
-            }
-            return View(bugReport);
         }
 
-        // POST: BugReports/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,BugDescription,Category,isResolved")] BugReport bugReport)
+        public void IncrementBugs(int bugId)
         {
-            if (ModelState.IsValid)
+            BugReport bugreport = db.BugReports.Find(bugId);
+            string category = bugreport.Category;
+
+            foreach (var categorySearch in db.Categories)
             {
-                db.Entry(bugReport).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (categorySearch.CategoryName == category)
+                {
+                    categorySearch.NumberOfBugs += 1;
+                }
             }
-            return View(bugReport);
         }
+
 
         [HttpPost]
         public ActionResult AJAXEdit(int? id, bool value)
@@ -227,7 +211,17 @@ namespace FinalYearProject.Controllers
                 return HttpNotFound();
             }else
             {
+                int id2 = id ?? default(int);
                 bugReport.isResolved = value;
+                if (value)
+                {                    
+                    DecrementBugs(id2);
+                }
+                else
+                {
+                    IncrementBugs(id2);
+                }
+                
                 db.Entry(bugReport).State = EntityState.Modified;
                 db.SaveChanges();
                 return PartialView("_BugReportTable", GetMyBugReports());
@@ -255,6 +249,7 @@ namespace FinalYearProject.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             BugReport bugReport = db.BugReports.Find(id);
+            DecrementBugs(id);
             db.BugReports.Remove(bugReport);
             db.SaveChanges();
             return RedirectToAction("Index");

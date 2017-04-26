@@ -74,7 +74,7 @@
             node.on("click", click)
             function click(d) {
                 $(location).attr('href', '/BugReports');
-                sessionStorage.setItem("categoryClicked", d.id);
+                sessionStorage.setItem("chartClicked", d.id);
             }
             });
 
@@ -140,11 +140,6 @@
 
             node.append("title")
                 .text(function (d) { return d.id + "\n" + format(d.value); });
-
-            node.on("click", click)
-            function click(d) {
-                $(location).attr('href', 'https://www.google.co.uk/#safe=off&q=' + d.id);
-            }
         });
     }
 </script>
@@ -210,8 +205,9 @@
 
             node.on("click", click)
             function click(d) {
-                $(location).attr('href', 'https://www.google.co.uk/#safe=off&q=' + d.id);
+                $(location).attr('href', '/BugReports');
+                sessionStorage.setItem("chartClicked", d.id);
             }
-        });
+            });
     }
 </script>
