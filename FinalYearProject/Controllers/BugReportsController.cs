@@ -25,10 +25,7 @@ namespace FinalYearProject.Controllers
         {
             string currentUserId = User.Identity.GetUserId();
             ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
-
-
-
-            return db.BugReports.ToList().Where(x => x.User == currentUser);
+            return db.BugReports.ToList();
 
         }
 

@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link href='//fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <title>@ViewBag.Title - Final Year Project</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -17,13 +18,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Final Year Application", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Bug Reports","Index","BugReports")</li>
                     <li>@Html.ActionLink("Categories","Index","Categories")</li>
-                    <li>@Html.ActionLink("Charts", "", "BubbleCharts")</li>
+                    <li>@Html.ActionLink("Graphs", "", "BubbleCharts")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -33,7 +34,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Final Year Project - James Leek</p>
         </footer>
     </div>
 

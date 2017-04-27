@@ -28,13 +28,20 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.isResolved)
+            @Html.DisplayNameFor(model => model.DateAdded)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.isResolved)
+            @Html.DisplayFor(model => model.DateAdded)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
     </dl>
 
     @using (Html.BeginForm()) {

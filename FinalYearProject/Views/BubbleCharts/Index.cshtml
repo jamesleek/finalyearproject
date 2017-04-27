@@ -48,7 +48,7 @@
                 .enter().append("g")
                 .attr("class", "node")
                 .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; });
-
+                            
             node.append("circle")
                 .attr("id", function (d) { return d.id; })
                 .attr("r", function (d) { return d.r; })
@@ -71,13 +71,16 @@
             node.append("title")
                 .text(function (d) { return d.id + "\n" + format(d.value); });
 
+
+
+
+
             node.on("click", click)
             function click(d) {
                 $(location).attr('href', '/BugReports');
                 sessionStorage.setItem("chartClicked", d.id);
             }
             });
-
 
     }
 </script>
@@ -211,3 +214,4 @@
             });
     }
 </script>
+

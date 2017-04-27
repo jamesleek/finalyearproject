@@ -164,7 +164,7 @@ namespace FinalYearProject.Controllers
                         }
                     }
                     sw3.WriteLine(string.Format("\"{0}\",\"{1}\"",
-                        item4.UserName.ToString(), bugCount));
+                        item4.UserName.ToString().Split('@')[0], bugCount));
                 }
             }
         }
