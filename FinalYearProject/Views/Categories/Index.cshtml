@@ -9,37 +9,17 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CategoryName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Keywords)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NumberOfBugs)
-        </th>
-        <th></th>
-    </tr>
+<div id="tableDiv2"></div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CategoryName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Keywords)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NumberOfBugs)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
+@section Scripts{
+    <script>
+        function message() {
+            swal("Bug Submitted!", "Your bug report has been submitted!", "success");
+        }
+    </script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/Custom Scripts/BuildCategoryTable.js"></script>
+    <script src="~/Scripts/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/Content/sweetalert.css">
+    @Scripts.Render("~/bundles/jqueryval")
 }
-
-</table>

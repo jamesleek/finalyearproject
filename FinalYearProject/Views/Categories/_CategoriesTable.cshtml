@@ -1,0 +1,68 @@
+﻿@model IEnumerable<FinalYearProject.Models.Category>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CategoryName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Keywords)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumberOfBugs)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Keywords)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfBugs)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.Label("Delete", null, new { onclick = "deleteThis(this.id)", id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<script>
+    function deleteThis(id) {
+        swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover this category!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false
+        },
+            function () {
+                $.ajax({
+                    url: '/Categories/AjaxDelete',
+                    data: {
+                        id: id
+                    },
+                    type: 'POST',
+                    success: function (result) {
+                        swal("Deleted!", "Your category has been deleted.", "success");
+                        $('#tableDiv2').html(result);
+                    }
+                });
+
+            });
+    }
+</script>

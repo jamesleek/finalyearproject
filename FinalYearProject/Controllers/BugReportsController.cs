@@ -175,7 +175,11 @@ namespace FinalYearProject.Controllers
             {
                 if (categorySearch.CategoryName == category)
                 {
-                    categorySearch.NumberOfBugs -= 1;
+                    if (categorySearch.NumberOfBugs > 0)
+                    {
+                        categorySearch.NumberOfBugs -= 1;
+                    }
+                    
                 }
             }
         }
@@ -225,16 +229,18 @@ namespace FinalYearProject.Controllers
             }              
         }
 
-        [HttpPost, ActionName("AjaxDelete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult AjaxDelete(int id)
+        [HttpPost]
+        public ActionResult AjaxDelete(int? id)
         {
             BugReport bugReport = db.BugReports.Find(id);
-            DecrementBugs(id);
+            int id2 = id ?? default(int);
+            DecrementBugs(id2);
             db.BugReports.Remove(bugReport);
             db.SaveChanges();
             return PartialView("_BugReportTable", GetMyBugReports());
         }
+
+
         // GET: BugReports/Delete/5
         public ActionResult Delete(int? id)
         {

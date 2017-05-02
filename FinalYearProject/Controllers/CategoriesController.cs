@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using FinalYearProject.Models;
+using Microsoft.AspNet.Identity;
 
 namespace FinalYearProject.Controllers
 {
@@ -19,6 +20,15 @@ namespace FinalYearProject.Controllers
         {
             return View(db.Categories.ToList());
         }
+
+        private IEnumerable<Category> GetMyCategories()
+        {
+            string currentUserId = User.Identity.GetUserId();
+            ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
+            return db.Categories.ToList();
+
+        }
+
 
         // GET: Categories/Details/5
         public ActionResult Details(int? id)
@@ -35,6 +45,12 @@ namespace FinalYearProject.Controllers
             return View(category);
         }
 
+        public ActionResult BuildCategoriesTable()
+        {
+            return PartialView("_CategoriesTable", GetMyCategories());
+        }
+
+
         // GET: Categories/Create
         public ActionResult Create()
         {
@@ -46,10 +62,11 @@ namespace FinalYearProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,CategoryName,Keywords,NumberOfBugs")] Category category)
+        public ActionResult Create([Bind(Include = "Id,CategoryName,Keywords")] Category category)
         {
             if (ModelState.IsValid)
             {
+                category.NumberOfBugs = 0;
                 db.Categories.Add(category);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -114,6 +131,16 @@ namespace FinalYearProject.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public ActionResult AjaxDelete(int? id)
+        {
+            Category category = db.Categories.Find(id);
+            db.Categories.Remove(category);
+            db.SaveChanges();
+            return PartialView("_CategoriesTable", GetMyCategories());
+        }
+
 
         protected override void Dispose(bool disposing)
         {

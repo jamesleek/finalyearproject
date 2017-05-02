@@ -255,6 +255,7 @@
     <Content Include="Content\sweetalert\thumbs-up.jpg" />
     <Content Include="Custom Scripts\AddCheckBoxListener.js" />
     <Content Include="Custom Scripts\BugsByCategory.js" />
+    <Content Include="Custom Scripts\BuildCategoryTable.js" />
     <Content Include="Custom Scripts\BuildTable.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -338,6 +339,7 @@
     <Content Include="Views\BubbleCharts\Edit.cshtml" />
     <Content Include="Views\BubbleCharts\Index.cshtml" />
     <Content Include="Views\Sweet\Alert.cshtml" />
+    <Content Include="Views\Categories\_CategoriesTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

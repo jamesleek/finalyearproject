@@ -40,9 +40,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.UserName)
             </td>
-            <td>                          
-                <a href='@Url.Action("Delete","BugReports",new { id = item.Id })'>
-                <img src="~/Content/Images/ic_delete_forever_black_48dp_1x.png"</a>               
+            <td>     
+                @Html.Label("Delete", null, new { onclick ="deleteThis(this.id)", id = item.Id})
             </td>
 
         </tr>
@@ -51,6 +50,34 @@
 </table>
 
 <script src="~/Custom Scripts/AddCheckBoxListener.js"></script>
+
+<script>
+    function deleteThis(id) {
+        swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover this imaginary file!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false
+        },
+            function () {
+                $.ajax({
+                    url: '/BugReports/AjaxDelete',
+                    data: {
+                        id: id
+                    },
+                    type: 'POST',
+                    success: function (result) {
+                        swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                        $('#tableDiv').html(result);
+                    }
+                });
+                
+            });
+    }
+</script>
 
 <script>
     if (sessionStorage.length != 0) {
