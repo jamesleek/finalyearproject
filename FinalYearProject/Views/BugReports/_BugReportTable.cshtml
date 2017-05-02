@@ -40,8 +40,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.UserName)
             </td>
-            <td>                  
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id }) 
+            <td>                          
+                <a href='@Url.Action("Delete","BugReports",new { id = item.Id })'>
+                <img src="~/Content/Images/ic_delete_forever_black_48dp_1x.png"</a>               
             </td>
 
         </tr>

@@ -225,6 +225,16 @@ namespace FinalYearProject.Controllers
             }              
         }
 
+        [HttpPost, ActionName("AjaxDelete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult AjaxDelete(int id)
+        {
+            BugReport bugReport = db.BugReports.Find(id);
+            DecrementBugs(id);
+            db.BugReports.Remove(bugReport);
+            db.SaveChanges();
+            return PartialView("_BugReportTable", GetMyBugReports());
+        }
         // GET: BugReports/Delete/5
         public ActionResult Delete(int? id)
         {
