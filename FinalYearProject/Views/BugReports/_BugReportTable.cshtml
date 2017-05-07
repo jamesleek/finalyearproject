@@ -1,8 +1,8 @@
 ﻿@model IEnumerable<FinalYearProject.Models.BugReport>
 
-<input type="text" id="search" placeholder="Search for names..">
 
-<table id ="tableTest" class="table">
+
+<table id ="bugTable" class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.BugDescription)
@@ -55,7 +55,7 @@
     function deleteThis(id) {
         swal({
             title: "Are you sure?",
-            text: "You will not be able to recover this imaginary file!",
+            text: "You will not be able to recover this bug report!",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
@@ -70,18 +70,30 @@
                     },
                     type: 'POST',
                     success: function (result) {
-                        swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                        swal("Deleted!", "The bug report has been deleted.", "success");
                         $('#tableDiv').html(result);
                     }
-                });
-                
+                });                
             });
     }
 </script>
 
 <script>
-    if (sessionStorage.length != 0) {
+    var $rows = $('#bugTable tr');
+    $('#search').keyup(function () {
+        var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
 
+        $rows.show().filter(function () {
+            var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+            return !~text.indexOf(val);
+        }).hide();
+    });
+
+</script>
+
+
+<script>
+    if (sessionStorage.length != 0) {
         
         var chartClicked = sessionStorage.getItem('chartClicked');
         $('input:text').val(chartClicked);
@@ -89,7 +101,7 @@
         var input, filter, table, tr, td, i;
         input = document.getElementById("search");
         filter = input.value.toUpperCase();
-        table = document.getElementById("tableTest");
+        table = document.getElementById("bugTable");
         tr = table.getElementsByTagName("tr");
 
         // Loop through all table rows, and hide those who don't match the search query
@@ -103,22 +115,8 @@
                 }
             }
         }
-
         sessionStorage.clear();
 
     }
-</script>
-
-<script>
-    var $rows = $('#tableTest tr');
-    $('#search').keyup(function () {
-        var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-
-        $rows.show().filter(function () {
-            var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-            return !~text.indexOf(val);
-        }).hide();
-    });
-    
 </script>
 

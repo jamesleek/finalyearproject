@@ -16,11 +16,17 @@ namespace FinalYearProject.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Categories
+        [Authorize]
         public ActionResult Index()
         {
             return View(db.Categories.ToList());
         }
 
+        /// <summary>
+        /// Gets all of the categories from the database and puts them into a lsit
+        /// </summary>
+        /// <returns>list of categories</returns>
+        [Authorize]
         private IEnumerable<Category> GetMyCategories()
         {
             string currentUserId = User.Identity.GetUserId();
@@ -29,38 +35,33 @@ namespace FinalYearProject.Controllers
 
         }
 
-
-        // GET: Categories/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Category category = db.Categories.Find(id);
-            if (category == null)
-            {
-                return HttpNotFound();
-            }
-            return View(category);
-        }
-
+        /// <summary>
+        /// Builds the categories table
+        /// </summary>
+        /// <returns>Partial view of categoires table</returns>
+        [Authorize]
         public ActionResult BuildCategoriesTable()
         {
             return PartialView("_CategoriesTable", GetMyCategories());
         }
 
-
-        // GET: Categories/Create
+        /// <summary>
+        /// Called when the user wishes to create a new category
+        /// </summary>
+        /// <returns>View for creating a new category</returns>
+        [Authorize]
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Categories/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Called when the user has inputted their new category this adds it to the database
+        /// </summary>
+        /// <param name="category"></param>
+        /// <returns>The user back to the categories table</returns>
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,CategoryName,Keywords")] Category category)
         {
@@ -75,7 +76,12 @@ namespace FinalYearProject.Controllers
             return View(category);
         }
 
-        // GET: Categories/Edit/5
+        /// <summary>
+        /// Gets the view for editting a category
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>view for edtting a category</returns>
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -90,12 +96,15 @@ namespace FinalYearProject.Controllers
             return View(category);
         }
 
-        // POST: Categories/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// sends the editted cateory to the database
+        /// </summary>
+        /// <param name="category"></param>
+        /// <returns>the user back to the categories table</returns>
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,CategoryName,Keywords,NumberOfBugs")] Category category)
+        public ActionResult Edit([Bind(Include = "Id,CategoryName,Keywords")] Category category)
         {
             if (ModelState.IsValid)
             {
@@ -106,33 +115,14 @@ namespace FinalYearProject.Controllers
             return View(category);
         }
 
-        // GET: Categories/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Category category = db.Categories.Find(id);
-            if (category == null)
-            {
-                return HttpNotFound();
-            }
-            return View(category);
-        }
-
-        // POST: Categories/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Category category = db.Categories.Find(id);
-            db.Categories.Remove(category);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
+        /// <summary>
+        /// This is called when the sweet alert gets confirmation from the user
+        /// this delets the category and updates the table
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>the view with the updated category table</returns>
         [HttpPost]
+        [Authorize]
         public ActionResult AjaxDelete(int? id)
         {
             Category category = db.Categories.Find(id);
@@ -140,7 +130,6 @@ namespace FinalYearProject.Controllers
             db.SaveChanges();
             return PartialView("_CategoriesTable", GetMyCategories());
         }
-
 
         protected override void Dispose(bool disposing)
         {

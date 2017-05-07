@@ -16,27 +16,29 @@ namespace FinalYearProject.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: BugReports
+        [Authorize]
         public ActionResult Index()
         {
             return View();
         }
 
+        /// <summary>
+        /// Gets the bug reports from the database
+        /// </summary>
+        /// <returns>A list of all bug reports</returns>
         private IEnumerable<BugReport> GetMyBugReports()
         {
-            string currentUserId = User.Identity.GetUserId();
-            ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
             return db.BugReports.ToList();
 
         }
 
 
-        /*
-         * For every category get each keyword
-         * turn these keywords into a hash
-         * Use this had to search through bug description
-         * if a match set catgeory as one where the keyword is
-         * return this category
-         */
+        /// <summary>
+        /// This implements the Rabin-Karp algorithm to search for keywords from a category in the description of
+        /// a bug report
+        /// </summary>
+        /// <param name="bugDescription"></param>
+        /// <returns>the category name where the keyword is found in the bug description</returns>
         private string GetACategory(string bugDescription)
         {
 
@@ -99,50 +101,28 @@ namespace FinalYearProject.Controllers
                                 }
                             }
                         }
-                    }
-                
+                    }                
             }
             catch(Exception e)
-            {
-                
-            }
-            
+            {                
+            }            
             return "Default";
         }
+
+
 
         public ActionResult BuildBugReportTable()
         {
             return PartialView("_BugReportTable",GetMyBugReports());
         }
 
-
-        // GET: BugReports/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: BugReports/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// This method is called from the ajax request to submit a new bug report
+        /// </summary>
+        /// <param name="bugReport"></param>
+        /// <returns>Updates the bug report table</returns>
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,BugDescription,Category,isResolved")] BugReport bugReport)
-        {
-            if (ModelState.IsValid)
-            {
-                string currentUserId = User.Identity.GetUserId();
-                ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
-                bugReport.User = currentUser;
-                db.BugReports.Add(bugReport);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(bugReport);
-        }
-
-        [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult AJAXCreate([Bind(Include = "Id,BugDescription,Category")] BugReport bugReport)
         {
@@ -165,8 +145,12 @@ namespace FinalYearProject.Controllers
             return PartialView("_BugReportTable",GetMyBugReports());
         }   
 
-        
-       public void DecrementBugs(int bugId)
+        /// <summary>
+        /// Called when a bug is marked as resolved or deleted
+        /// so reduces the category the bug report was in by 1
+        /// </summary>
+        /// <param name="bugId"></param>
+        public void DecrementBugs(int bugId)
         {
             BugReport bugreport = db.BugReports.Find(bugId);
             string category = bugreport.Category;
@@ -184,6 +168,10 @@ namespace FinalYearProject.Controllers
             }
         }
 
+        /// <summary>
+        /// When a bug report is put into a category that categories bug count is increased by 1
+        /// </summary>
+        /// <param name="bugId"></param>
         public void IncrementBugs(int bugId)
         {
             BugReport bugreport = db.BugReports.Find(bugId);
@@ -198,8 +186,14 @@ namespace FinalYearProject.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Called when the is resolved checkbox is clicked
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="value"></param>
+        /// <returns>updated bug report table</returns>
         [HttpPost]
+        [Authorize]
         public ActionResult AJAXEdit(int? id, bool value)
         {
             if (id == null)
@@ -229,7 +223,14 @@ namespace FinalYearProject.Controllers
             }              
         }
 
+        /// <summary>
+        /// This is called when the sweet alert gets confirmation from the user
+        /// this delets the bug report and updates the table
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>the view with the updated bug report table</returns>
         [HttpPost]
+        [Authorize]
         public ActionResult AjaxDelete(int? id)
         {
             BugReport bugReport = db.BugReports.Find(id);
@@ -239,35 +240,6 @@ namespace FinalYearProject.Controllers
             db.SaveChanges();
             return PartialView("_BugReportTable", GetMyBugReports());
         }
-
-
-        // GET: BugReports/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            BugReport bugReport = db.BugReports.Find(id);
-            if (bugReport == null)
-            {
-                return HttpNotFound();
-            }
-            return View(bugReport);
-        }
-
-        // POST: BugReports/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            BugReport bugReport = db.BugReports.Find(id);
-            DecrementBugs(id);
-            db.BugReports.Remove(bugReport);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
 
 
         protected override void Dispose(bool disposing)

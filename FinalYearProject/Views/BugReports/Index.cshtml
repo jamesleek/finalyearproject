@@ -4,17 +4,16 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Your Bugs</h2>
-<div id="tableDiv"></div>
+<h2>Bugs That Have Been Submitted</h2>
 <div id="bugReportCreateForm">
     @using (Ajax.BeginForm("AJAXCreate", "BugReports",
-                        new AjaxOptions
-                        {
-                            InsertionMode = InsertionMode.Replace,
-                            HttpMethod = "POST",
-                            UpdateTargetId = "tableDiv",
-                            OnSuccess = "message"
-                        }))
+                                new AjaxOptions
+                                {
+                                    InsertionMode = InsertionMode.Replace,
+                                    HttpMethod = "POST",
+                                    UpdateTargetId = "tableDiv",
+                                    OnSuccess = "message"
+                                }))
 
     {
         <div class="form-group">
@@ -26,7 +25,16 @@
             </div>
         </div>
     }
+
 </div>
+<div class="form-group">
+    @Html.Label("Search", new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.TextBox("search",null, new { @class = "form-control" })
+    </div>
+</div>
+<div id="tableDiv"></div>
+
 @section Scripts{
     <script>
         function message() {

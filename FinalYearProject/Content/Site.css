@@ -23,3 +23,16 @@ textarea {
     max-width: 280px;
 }
 
+
+tr:hover {
+    background-color: #99ccff
+}
+
+g{
+   font-size:16px;
+}
+
+tr, td {
+    padding: 15px;
+    text-align: left;
+}

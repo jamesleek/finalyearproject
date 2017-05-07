@@ -17,16 +17,22 @@ namespace FinalYearProject.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: BubbleCharts
+        /// <summary>
+        /// Creates all the necessary .csv files needed for creating the bubble charts
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
         public ActionResult Index()
         {
             CreateCSVFiles();
             CreateCSVFiles2();
             CreateCSVFiles3();
-            return View(db.Categories.ToList());
+            return View();
         }
 
-
-        //Create .CSV files for each charrt
+        /// <summary>
+        /// Creates the categories.csv file by getting the category name and number of bugs in each
+        /// </summary>
         public void CreateCSVFiles()
         {
             string directory = Server.MapPath("~/");
@@ -46,6 +52,10 @@ namespace FinalYearProject.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates the months.csv file by searching through each bug report and getting the datetime
+        /// then looks at the month and increments the month accordingly
+        /// </summary>
         public void CreateCSVFiles2()
         {
             string directory2 = Server.MapPath("~/");
@@ -142,6 +152,10 @@ namespace FinalYearProject.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates the BugsByUser.csv file by looping through each user and comparing the user name
+        /// to the user that submitted the bug report. Counts the number for each user and writes it to the file
+        /// </summary>
         public void CreateCSVFiles3()
         {
             string directory3 = Server.MapPath("~/");
@@ -167,103 +181,6 @@ namespace FinalYearProject.Controllers
                         item4.UserName.ToString().Split('@')[0], bugCount));
                 }
             }
-        }
-
-
-        // GET: BubbleCharts/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Category category = db.Categories.Find(id);
-            if (category == null)
-            {
-                return HttpNotFound();
-            }
-            return View(category);
-        }
-
-        // GET: BubbleCharts/Create
-        public ActionResult Create()
-        {
-
-            return View();
-        }
-
-        // POST: BubbleCharts/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,CategoryName,Keywords,NumberOfBugs")] Category category)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Categories.Add(category);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(category);
-        }
-
-        // GET: BubbleCharts/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Category category = db.Categories.Find(id);
-            if (category == null)
-            {
-                return HttpNotFound();
-            }
-            return View(category);
-        }
-
-        // POST: BubbleCharts/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,CategoryName,Keywords,NumberOfBugs")] Category category)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(category).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(category);
-        }
-
-        // GET: BubbleCharts/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Category category = db.Categories.Find(id);
-            if (category == null)
-            {
-                return HttpNotFound();
-            }
-            return View(category);
-        }
-
-        // POST: BubbleCharts/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Category category = db.Categories.Find(id);
-            db.Categories.Remove(category);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

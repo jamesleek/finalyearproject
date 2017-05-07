@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<table class="table">
+<table id="categoryTable" class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.CategoryName)
@@ -65,4 +65,16 @@
 
             });
     }
+</script>
+<script>
+    var $rows = $('#categoryTable tr');
+    $('#search').keyup(function () {
+        var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+        $rows.show().filter(function () {
+            var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+            return !~text.indexOf(val);
+        }).hide();
+    });
+
 </script>
